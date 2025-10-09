@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import './App.css';
+import LoginPage from './LoginPage';
+import HomePage from './HomePage';
+import SignupPage from './SignupPage'; // Import the new SignupPage component
 
 function App() {
-  const [count, setCount] = useState(0)
+  // We now use a string to track the view state instead of a boolean
+  const [view, setView] = useState('login'); // Can be 'login', 'signup', or 'loggedIn'
+
+  // Function to handle successful login or signup
+  const handleAuthSuccess = () => {
+    setView('loggedIn');
+  };
+
+  // Function to handle logout
+  const handleLogout = () => {
+    setView('login');
+  };
+
+  // Render the correct component based on the 'view' state
+  const renderView = () => {
+    switch (view) {
+      case 'signup':
+        return <SignupPage onSignup={() => setView('login')} onSwitchToLogin={() => setView('login')} />;
+      case 'loggedIn':
+        return <HomePage onLogout={handleLogout} />;
+      case 'login':
+      default:
+        return <LoginPage onLogin={handleAuthSuccess} onSwitchToSignup={() => setView('signup')} />;
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      {renderView()}
+    </div>
+  );
 }
 
-export default App
+export default App;
