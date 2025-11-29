@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
 
-// Add the new onSwitchToSignup prop
-function LoginPage({ onLogin, onSwitchToSignup }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-  const handleLogin = (event) => {
-    event.preventDefault();
-    onLogin();
+function LoginPage() {
+  const nav = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    if (email.trim() === "" || password.trim() === "") {
+      alert("Enter details");
+      return;
+    }
+
+    nav("/"); // 👉 Navigate to home
   };
 
   return (
@@ -15,23 +23,40 @@ function LoginPage({ onLogin, onSwitchToSignup }) {
       <div className="login-card">
         <h1 className="login-title">Welcome Back</h1>
         <p className="login-subtitle">Sign in to continue to MindWell Connect</p>
-        
+
         <form onSubmit={handleLogin}>
-          {/* Input fields are the same as before */}
           <div className="input-group">
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required />
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+            />
           </div>
+
           <div className="input-group">
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required />
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+            />
           </div>
-          <button type="submit" className="login-button">Sign In</button>
+
+          <button type="submit" className="login-button">
+            Sign In
+          </button>
         </form>
 
         <div className="login-footer">
-          {/* This link now calls the function to switch pages */}
-          <p>Don't have an account? <a href="#" onClick={onSwitchToSignup}>Sign Up</a></p>
+          <p>
+            Don't have an account?{" "}
+            <a onClick={() => nav("/signup")}>Sign Up</a>
+          </p>
         </div>
       </div>
     </div>

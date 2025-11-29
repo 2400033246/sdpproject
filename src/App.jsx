@@ -1,41 +1,38 @@
-import React, { useState } from 'react';
-import './App.css';
-import LoginPage from './LoginPage';
-import HomePage from './HomePage';
-import SignupPage from './SignupPage'; // Import the new SignupPage component
 
-function App() {
-  // We now use a string to track the view state instead of a boolean
-  const [view, setView] = useState('login'); // Can be 'login', 'signup', or 'loggedIn'
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
 
-  // Function to handle successful login or signup
-  const handleAuthSuccess = () => {
-    setView('loggedIn');
-  };
+import LoginPage from "./LoginPage";
+import SignupPage from "./SignupPage";
+import HomePage from "./HomePage";
 
-  // Function to handle logout
-  const handleLogout = () => {
-    setView('login');
-  };
+import TherapySessions from "./pages/TherapySessions";
+import Mindfulness from "./pages/Mindfulness";
+import SupportGroups from "./pages/SupportGroups";
+import SelfAssessment from "./pages/SelfAssessment";
 
-  // Render the correct component based on the 'view' state
-  const renderView = () => {
-    switch (view) {
-      case 'signup':
-        return <SignupPage onSignup={() => setView('login')} onSwitchToLogin={() => setView('login')} />;
-      case 'loggedIn':
-        return <HomePage onLogout={handleLogout} />;
-      case 'login':
-      default:
-        return <LoginPage onLogin={handleAuthSuccess} onSwitchToSignup={() => setView('signup')} />;
-    }
-  };
-
+export default function App() {
   return (
-    <div>
-      {renderView()}
-    </div>
+    <Router>
+      <Routes>
+
+        {/* LOGIN */}
+        <Route path="/login" element={<LoginPage />} />
+
+        {/* SIGNUP */}
+        <Route path="/signup" element={<SignupPage />} />
+
+        {/* HOME */}
+        <Route path="/" element={<HomePage />} />
+
+        {/* SERVICES */}
+        <Route path="/therapy-sessions" element={<TherapySessions />} />
+        <Route path="/mindfulness" element={<Mindfulness />} />
+        <Route path="/support-groups" element={<SupportGroups />} />
+        <Route path="/self-assessment" element={<SelfAssessment />} />
+
+      </Routes>
+    </Router>
   );
 }
-
-export default App;
